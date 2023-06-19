@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-require("dotenv").config();
 
+require("dotenv").config();
 
 //Inicialización del servidor
 const app = express();
@@ -26,19 +26,20 @@ mongoose
   });
 
 //Import de rutas
-const authRoutes = require('./routes/auth')
+const authRoutes = require("./routes/auth");
+const admin = require("./routes/admin");
+const verifyToken = require("./routes/validate-token");
 
 //Configuración de los middlewares
-app.use('/api/user', authRoutes)
+app.use("/api/admin", verifyToken, admin);
+app.use("/api/user", authRoutes);
 
 app.use("/", (req, res) => {
   res.status(200).json({
     estado: "true",
-    message: "Respuesta exitosa.",
+    message: "Respuesta exitosa desde el index.",
   });
 });
-
-
 
 //Inicialización del servidor
 const port = process.env.PORT;
